@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { randomUUID } from 'crypto';
+import { UserDto } from './user.dto';
 
 export class MessageDto {
-  constructor(uuid: string, content: string, createdAt: Date, author: number) {
+  constructor(uuid: string, content: string, createdAt: Date, author: UserDto) {
     this.uuid = uuid;
     this.content = content;
     this.createdAt = createdAt;
@@ -18,6 +19,6 @@ export class MessageDto {
   @ApiProperty()
   public createdAt: Date;
 
-  @ApiProperty()
-  public author: number;
+  @ApiProperty({ type: UserDto })
+  public author: UserDto;
 }

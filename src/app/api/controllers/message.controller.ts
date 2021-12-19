@@ -47,7 +47,7 @@ export class MessageController {
   }
 
   @ApiResponse({ type: MessageDto })
-  @Put('/:messageUUID')
+  @Put('/')
   @UseAuth()
   private edit(
     @User() user: UserDto,

@@ -46,7 +46,7 @@ export class MessageService implements IMessageService {
     message.content = dto.content;
     message.room = { uuid: room } as RoomEntity;
     return this.repo.save(message).then(({ uuid, content, createdAt }) => {
-      const message = new MessageDto(uuid, content, createdAt, user.id);
+      const message = new MessageDto(uuid, content, createdAt, user);
       this.ee.emit('message.created', room, message);
       return message;
     });
@@ -62,7 +62,7 @@ export class MessageService implements IMessageService {
     }
     await this.repo.delete({ uuid: message.uuid });
     const { content, createdAt, room } = message;
-    const dto = new MessageDto(uuid, content, createdAt, user.id);
+    const dto = new MessageDto(uuid, content, createdAt, user);
     this.ee.emit('message.deleted', room.uuid, dto);
     return dto;
   }
@@ -82,7 +82,7 @@ export class MessageService implements IMessageService {
     return this.repo
       .save(message)
       .then(({ uuid, content, createdAt, room }) => {
-        const message = new MessageDto(uuid, content, createdAt, user.id);
+        const message = new MessageDto(uuid, content, createdAt, user);
         this.ee.emit('message.edited', room.uuid, message);
         return message;
       });
@@ -94,8 +94,8 @@ export class MessageService implements IMessageService {
       .find({ where: { room: { uuid: room } }, relations: ['author'] })
       .then((r) =>
         r.map(
-          ({ uuid, content, createdAt, author }) =>
-            new MessageDto(uuid, content, createdAt, author.id),
+          ({ uuid, content, createdAt, author: { id, login } }) =>
+            new MessageDto(uuid, content, createdAt, new UserDto(id, login)),
         ),
       );
   }
