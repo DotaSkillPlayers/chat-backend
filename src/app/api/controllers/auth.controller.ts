@@ -1,12 +1,19 @@
-import { Body, Controller, Inject, Post, ValidationPipe } from '@nestjs/common';
-import { EBindings, IAuthService, SignedUpDto } from '../../../core';
+import {
+  Body,
+  Controller,
+  Inject,
+  Logger,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
+import { eBindings, IAuthService, SignedUpDto } from '../../../core';
 import { AuthorizedUserDto, SignInDto, SignUpDto } from '../../../core/dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  @Inject(EBindings.AuthService)
+  @Inject(eBindings.AuthService)
   private service: IAuthService;
 
   @ApiResponse({ type: AuthorizedUserDto })
@@ -14,6 +21,7 @@ export class AuthController {
   private signIn(
     @Body(ValidationPipe) dto: SignInDto,
   ): Promise<AuthorizedUserDto> {
+    Logger.log(JSON.stringify(dto, null, 2));
     return this.service.signIn(dto);
   }
 

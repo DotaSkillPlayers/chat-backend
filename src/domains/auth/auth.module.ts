@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { EBindings } from '../../core';
+import { eBindings } from '../../core';
 import { UserModule } from '../user';
 import { HashingModule } from '../hashing';
 import { JwtModule } from '@nestjs/jwt';
@@ -24,12 +24,12 @@ import { JwtStrategy } from './jwt.strategy';
   ],
   providers: [
     {
-      provide: EBindings.AuthService,
+      provide: eBindings.AuthService,
       useClass: AuthService,
     },
     JwtStrategy,
     JwtAuthGuard,
   ],
-  exports: [EBindings.AuthService, JwtAuthGuard],
+  exports: [eBindings.AuthService, JwtAuthGuard],
 })
 export class AuthModule {}

@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { EBindings } from '../../core';
+import { eBindings } from '../../core';
 import { HashingService } from './hashing.service';
 
 @Module({
   providers: [
     {
-      provide: EBindings.HashingService,
+      provide: eBindings.HashingService,
       useClass: HashingService,
     },
   ],
-  exports: [EBindings.HashingService],
+  exports: [eBindings.HashingService],
 })
 export class HashingModule {}

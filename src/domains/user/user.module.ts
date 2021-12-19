@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { EBindings } from '../../core';
+import { eBindings } from '../../core';
 import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
@@ -9,10 +9,10 @@ import { HashingModule } from '../hashing';
   imports: [TypeOrmModule.forFeature([UserRepository]), HashingModule],
   providers: [
     {
-      provide: EBindings.UserService,
+      provide: eBindings.UserService,
       useClass: UserService,
     },
   ],
-  exports: [EBindings.UserService],
+  exports: [eBindings.UserService],
 })
 export class UserModule {}

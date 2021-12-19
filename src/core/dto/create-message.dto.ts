@@ -6,5 +6,5 @@ export class CreateMessageDto {
   @IsString()
   @MinLength(1)
   @MaxLength(200)
-  private content: string;
+  public content: string;
 }

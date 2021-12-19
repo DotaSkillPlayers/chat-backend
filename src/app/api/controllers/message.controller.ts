@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
@@ -14,39 +15,54 @@ import {
   CreateMessageDto,
   EditMessageDto,
   MessageDto,
+  UserDto,
 } from '../../../core/dto';
-import { UseAuth } from '../../../core';
+import { eBindings, IMessageService, UseAuth, User } from '../../../core';
 
 @ApiTags('message')
 @Controller('message')
 export class MessageController {
+  @Inject(eBindings.MessageService)
+  private service: IMessageService;
+
+  @ApiResponse({ type: MessageDto })
   @Post('/:roomUUID')
   @UseAuth()
-  private send(
+  private create(
+    @User() user: UserDto,
     @Param('roomUUID', ParseUUIDPipe) roomUUID: string,
     @Body(ValidationPipe) message: CreateMessageDto,
-  ): unknown {
-    return null;
+  ): Promise<MessageDto> {
+    return this.service.create(user, roomUUID, message);
   }
 
   @ApiResponse({ type: [MessageDto] })
   @Get('/:roomUUID')
   @UseAuth()
-  private get(@Param('roomUUID', ParseUUIDPipe) roomUUID: string): unknown {
-    return null;
+  private getByRoom(
+    @User() user: UserDto,
+    @Param('roomUUID', ParseUUIDPipe) roomUUID: string,
+  ): Promise<MessageDto[]> {
+    return this.service.getByRoom(roomUUID, user);
   }
 
+  @ApiResponse({ type: MessageDto })
   @Put('/:messageUUID')
   @UseAuth()
   private edit(
-    @Param('messageUUID', ParseUUIDPipe) messageUUID: string,
-    @Body(ValidationPipe) dto: EditMessageDto,
-  ): void {}
+    @User() user: UserDto,
+    @Body(ValidationPipe) message: EditMessageDto,
+  ): Promise<MessageDto> {
+    return this.service.edit(user, message);
+  }
 
   @ApiResponse({ type: MessageDto })
   @Delete('/:messageUUID')
   @UseAuth()
   private delete(
+    @User() user: UserDto,
     @Param('messageUUID', ParseUUIDPipe) messageUUID: string,
-  ): void {}
+  ): Promise<MessageDto> {
+    return this.service.delete(user, messageUUID);
+  }
 }

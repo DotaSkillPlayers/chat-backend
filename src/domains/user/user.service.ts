@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { EBindings, IHashingService, IUserService } from '../../core';
+import { eBindings, IHashingService, IUserService } from '../../core';
 import { CreateUserDto, SignInDto, UserDto } from '../../core/dto';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +10,7 @@ export class UserService implements IUserService {
   @InjectRepository(UserRepository)
   private repo: UserRepository;
 
-  @Inject(EBindings.HashingService)
+  @Inject(eBindings.HashingService)
   private hashingService: IHashingService;
 
   public async create(dto: CreateUserDto): Promise<UserDto> {

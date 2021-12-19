@@ -1,5 +1,5 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { EBindings, IAuthService, IUserService, SignedUpDto } from '../../core';
+import { eBindings, IAuthService, IUserService, SignedUpDto } from '../../core';
 import { CreateUserDto, SignInDto, SignUpDto } from '../../core/dto';
 import { IHashingService } from '../../core';
 import { AuthorizedUserDto } from '../../core/dto';
@@ -7,10 +7,10 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService implements IAuthService {
-  @Inject(EBindings.UserService)
+  @Inject(eBindings.UserService)
   private userService: IUserService;
 
-  @Inject(EBindings.HashingService)
+  @Inject(eBindings.HashingService)
   private hashService: IHashingService;
 
   @Inject(JwtService)
